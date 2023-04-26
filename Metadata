@@ -1,0 +1,7 @@
+Where is metadata stored in Snowflake?
+Once the table is created in Snowflake, 
+it generates metadata bout the table containing a count of the rows, 
+the date-time stamp on which it gets created, and aggregate functions such as sum, min,
+and a max of numerical columns.
+Metadata is stored in S3 where snowflake manages the data storage.
+that's why while querying the metadata, there is no need of running a warehouse.
