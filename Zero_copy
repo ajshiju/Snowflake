@@ -1,0 +1,12 @@
+10. How does zero-copy cloning work and what are its advantage
+Zero copy cloning is just like a creating clone of the snowflake object.
+You can create clones of SF objects such as DB, schema, table, stream, stage, file formats, sequence, and task.
+
+when you create a clone, Snowflake will point the metadata of the source object to cloned object depicting cloning until you make any changes to cloned object.
+1. Main advantage of this is it creates a copy of the object in less time.
+2. It does not consume any extra space if no updates happen on the cloned object.
+3. fast way to take backup of any object.
+
+Syntax:
+create table orders_clone clone orders;
+
