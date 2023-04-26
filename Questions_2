@@ -50,3 +50,13 @@ which in the case of Amazon Web Services, means 99.999999999% durability. Even i
 Snowflake stores files in storage as compressed by default as gzip format which helps to reduce the storage space occupied by that 
 file also improves the data loading and unloading performance. It also detects compressed file formats such as gzip,bzip2,deflate,raw_deflate.
 
+7.What are the responsibilities of a storage layer in Snowflake?
+The storage layer is nothing but the cloud storage service where data resides.
+It has responsibilities such as :
+1. Data protection
+2. Data durability
+3. Data Encryption
+4. Archival of Data
+
+8.
+
