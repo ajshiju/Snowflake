@@ -1,0 +1,172 @@
+1. What is a Snowflake cloud data warehouse?
+
+Snowflake is an analytic data warehouse implemented as a SaaS service. 
+It is built on a new SQL database engine with a unique architecture built for the cloud.
+This cloud-based data warehouse solution was first available on AWS as software to load and analyze massive volumes of data.
+The most remarkable feature of Snowflake is its ability to spin up any number of virtual warehouses, which means the user can operate an 
+unlimited number of independent workloads against the same data without any risk of contention.
+
+2. Explain Snowflake architecture
+Snowflake is built on an AWS cloud data warehouse and is truly a Saas offering. 
+There is no software, hardware, ongoing maintenance, tuning, etc. needed to work with Snowflake.
+
+Three main layers make the Snowflake architecture - database storage, query processing, and cloud services.
+
+Data storage - In Snowflake, the stored data is reorganized into its internal optimized, columnar, and optimized format. 
+Query processing - Virtual warehouses process the queries in Snowflake.
+Cloud services - This layer coordinates and handles all activities across the Snowflake. It provides the best results for Authentication, 
+Metadata management, Infrastructure management, Access control, and Query parsing.
+
+3. What are the features of Snowflake?
+Unique features of the Snowflake data warehouse are listed below:
+
+Database and Object Closing
+Support for XML
+External tables
+Hive meta store integration
+Supports geospatial data
+Security and data protection
+Data sharing
+Search optimization service
+Table streams on external tables and shared tables
+Result Caching
+
+
+4.Describe Snowflake computing. 
+Snowflake cloud data warehouse platform provides instant, secure, and governed access to the entire data network and 
+a core architecture to enable various types of data workloads, including a single platform for developing modern 
+data applications. Snowflake brings together the power of data warehouses, 
+the scalability of big data platforms, the elasticity of the cloud, and real-time data sharing at a 
+fraction of the cost of traditional solutions.
+
+5. What are the cloud platforms currently supported by Snowflake?
+Amazon Web Services (AWS)
+Google Cloud Platform (GCP)
+Microsoft Azure (Azure)
+
+6. What is the use of the Cloud Services layer in Snowflake?
+The services layer acts as the brain of the Snowflake. In Snowflake, the Services layer authenticates 
+user sessions, applies security functions, offers management, performs optimization, and organizes all the transactions.
+
+
+
+7.How is data stored in Snowflake?
+Snowflake stores the data in multiple micro partitions which are internally optimized and compressed. 
+The data is stored in a columnar format in the cloud storage of Snowflake. 
+The data objects stored by Snowflake cannot be accessed or visible to the users. 
+By running SQL query operations on Snowflake, you can access them.
+
+
+8.How many editions of Snowflake are available?
+Snowflake offers four editions depending on your usage requirements.
+
+Standard edition - Its introductory level offering provides unlimited access to Snowflake’s standard features.
+Enterprise edition - Along with Standard edition features and services, offers additional features required for large-scale enterprises.
+Business-critical edition - Also, called Enterprise for Sensitive Data (ESD). It offers high-level data protection
+for sensitive data to organization needs.
+Virtual Private Snowflake (VPS) - Provides high-level security for organizations dealing with financial activities.
+
+
+9.Explain Virtual warehouse
+In Snowflake, a virtual warehouse, often known as a "warehouse," is a collection of computational resources. A virtual warehouse provides the resources required for the users like CPU, memory, and temporary storage to perform multiple Snowflake operations:
+
+Execute the SQL SELECT statements that necessitate the use of computing resources  (e.g. retrieving rows from tables and views).
+DML operations include:
+Updating table rows (DELETE , INSERT , UPDATE).
+Data Loading into tables (COPY INTO <table>).
+Data unloading from tables (COPY INTO <location>).
+
+10. Is Snowflake OLTP or OLAP?
+An OLTP (Online Transactional Processing) database contains detailed and up-to-date data, 
+as well as a large volume of typically small data transactions. 
+In turn, online analytical processing (OLAP) often necessitates complex and aggregated queries with a small number of transactions. 
+Snowflake's database schema is built around online analytical processing.
+
+11.What are Micro Partitions?
+Snowflake comes along with a robust and unique kind of 
+data partitioning known as micro partitioning. 
+Data that exists in the Snowflake tables are systematically converted into micro partitions. 
+Generally, we perform Micro partitioning on the Snowflake tables.
+
+12.Explain Snowflake Time Travel
+Snowflake Time Travel tool allows us to access the past data at any moment in the specified period. 
+Through this, we can see the data that we can change or delete. Through this tool, we can carry out the following tasks:
+
+Restore the data-associated objects that may have lost unintentionally.
+For examining the data utilization and changes done to the data in a specific time period.
+Duplicating and backing up the data from the essential points in history.
+
+
+13. What is zero-copy Cloning in Snowflake?
+Zero copy cloning is a snowflake implementation in which a simple keyword CLONE allows you to generate a clone of your tables, schemas, and databases without replicating the actual data. As a result, you can have practically real-time data from production cloned into your dev and stage environments to conduct various activities.
+
+Advantages:
+
+There are no additional storage costs associated with data replication.
+There is no waiting time for copying data from production to non-production contexts.
+There is no need for administrative efforts since cloning is as simple as a click of a button. 
+No copy, only clone: Data exists only in one place.
+Promote corrected/fixed data to production instantly.
+
+
+14.Differentiate Fail-Safe and Time-Travel in Snowflake
+Time-Travel	Fail-Safe
+According to the Snowflake edition, account or object particular time travel setup, 
+users can retrieve and set the data reverting to the history.
+Fail-Safe, 
+the User does not have control over the recovery of data valuable merely after completing the period. 
+In this context, only Snowflake assistance can help for 7 days. Therefore if you set time travel as six days, 
+we retrieve the database objects after executing the transaction + 6 days duration.
+
+
+15.What is SnowSQL used for?
+SnowSQL is the command-line client used to connect to Snowflake and conduct SQL queries as well as complete all DDL and DML actions 
+such as loading and unloading data from database tables.
+SnowSQL (snowsql executable) can be operated as an interactive shell or in batch mode via stdin or with the -f option.
+
+
+16.What are Snowflake views?
+Views are useful for displaying certain rows and columns in one or more tables. A view makes it possible to obtain 
+the result of a query as if it were a table. The CREATE VIEW statement defines the query. Snowflake supports two different types of views:
+
+Non-materialized views (often referred to as "views") - The results of a non-materialized view are obtained by executing the query at 
+the moment the view is referenced in a query. When compared to materialised views, performance is slower. 
+Materialized views - Although named as a type of view, a materialised view behaves more like a table in many aspects.
+The results of a materialised view are saved in a similar way to that of a table. This allows for faster access, 
+but it necessitates storage space and active maintenance, both of which incur extra expenses.
+
+17.Describe Snowflake Clustering
+In Snowflake, data partitioning is called clustering, which specifies cluster keys on the table. 
+The method by which you manage clustered data in a table is called re-clustering.
+
+A clustering key is a subset of columns in a table (or expressions on a database) that are deliberately intended
+to co-locate the table's data in the same micro-partitions. This is beneficial for very large tables where 
+the ordering was not perfect (at the time the data was inserted/loaded) or if extensive DML has weakened the table's natural clustering.
+Some general indicators that can help determine whether a clustering key should be defined for a table are as follows:
+Table queries are running slower than expected or have degraded noticeably over time.
+The table's clustering depth is large.
+
+18.Explain Data Shares
+Snowflake Data sharing allows organizations to securely and immediately 
+share their data. Secure data sharing enables sharing of the data between 
+the accounts through Snowflake secure views, database tables.
+
+19.What is “Stage” in the Snowflake?
+In Snowflake, stages are data storage locations. 
+If the data to be imported into Snowflake is stored in another cloud area, such as AWS S3, Azure, or GCP, 
+these are referred to as External stages; if the data is stored within Snowflake, they are referred to as Internal stages.
+
+Internal Stages are further divided as below
+
+Table Stage
+User Stage
+Internal Named Stage
+
+20. Does Snowflake maintain stored procedures?
+Yes, Snowflake maintains stored procedures. The stored procedure is the same as a function; 
+it is created once and used several times. Through the CREATE PROCEDURE command,
+we can create it and through the “CALL” command, we can execute it. In Snowflake, 
+stored procedures are developed in Javascript API.
+These APIs enable stored procedures for executing the database operations like SELECT, UPDATE, and CREATE.
+
+
