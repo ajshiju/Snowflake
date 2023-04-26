@@ -1,0 +1,52 @@
+1. What is meant by Snowflake caching?
+Ans: Snowflake is capable of caching the results of the query that are run.  Whenever a new query is submitted, it also performs a check on the previously executed queries.  If it finds any matching query that already exists, then the results of it are cached. It then uses the cached result set instead of executing the query once again. As a result, the Snowflake can be used by any number of users across the globe and hence, called to be a global  Snowflake catching.
+
+Q19. Briefly list the advantages of Snowflake compression?
+Ans: Snowflake compression has got the below advantages.
+
+1.  Due to Compression,  the storage costs will be less than the native cloud storage.
+
+2.  There will not be any storage cost for the disc caches.
+
+3.  Due to compression, there will be zero storage overhead for data cloning and data sharing.
+
+2. List of the different types of caching in Snowflake?
+Ans: There are three different types of caching in  Snowflake.  They are listed below.
+
+1. Query  results caching
+
+2. Metadata cache
+
+3. Virtual warehouse local district caching
+
+
+3.What are the different types of Stages?
+Stages are commonly referred to as the storage platform used to store the files. In Snowflake, there are two types of stages:
+1. Internal stage — Resides in the Snowflake storage
+2. External stage — Resides in any of the cloud object storage (AWS S3, Azure Blob, GCP bucket )
+Data can be retrieved from the stage or transferred to the stage using the COPY INTO command.
+For BULK loading you can use COPY INTO and for continuous data loading you need to use SNOWPIPE, an autonomous service provided by Snowflake.
+To load data from the local file system into snowflake you can use the PUT command.
+
+
+4.What are the data security features in Snowflake?
+Snowflake provides below security features:
+1. Data encryption
+2. Object-level access
+3. RBAC
+4. Secure data sharing
+5. Masking policies for sensitive data
+
+5. What is Snowflake Caching? What are the different types of caching in Snowflake?
+It comprises three types of caching :
+1. Result cache- This holds the results of every query executed in the past 24 hours.
+2. Local disk cache- This is used to cache data used by SQL queries. Whenever data is needed for a given query 
+it’s retrieved from the Remote Disk storage, and cached in SSD and memory.
+3. Remote cache- Which holds the long-term storage. This level is responsible for data resilience, 
+which in the case of Amazon Web Services, means 99.999999999% durability. Even in the event of an entire data center failure.
+
+
+6.What are the benefits of Snowflake Compression?
+Snowflake stores files in storage as compressed by default as gzip format which helps to reduce the storage space occupied by that 
+file also improves the data loading and unloading performance. It also detects compressed file formats such as gzip,bzip2,deflate,raw_deflate.
+
