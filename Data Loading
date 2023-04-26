@@ -1,0 +1,24 @@
+INSERT
+INSERT OVERWRITE
+INSERT SELECT * FROM
+
+
+
+Stages
+
+Internal Stages
+
+Managed by snowflake 
+raw files ,nt compressed ..
+
+
+External Stages
+
+S3 - managed by cloud provider.
+
+
+Internal Stages
+
+User -- Every user and table have stages by deafualt - Only access to users
+Table. Stage -- any user can load data - with the access
+Named. - User can create with create table stage 
