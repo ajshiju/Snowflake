@@ -1,0 +1,8 @@
+1.how do we increase the snowflake table perfomanace?
+2.How do we select columns for clustering ?
+3.How do we use matrraizsed views ,does it take virtual warehisue compute?
+4.Diff source file - to snowflake-- how will you desaign ?
+5.what all miogration process we use to migarte to snowflake?
+6.How do we share data from 1 region to another region (disasaiter recover)?
+7.Stream - kafak can be connected?
+8.
