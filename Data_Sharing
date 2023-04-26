@@ -1,0 +1,17 @@
+11. What are Data Shares in Snowflake?
+Data sharing is the feature provided by snowflake to share data across snowflake accounts and people outside of the snowflake accounts. 
+You can share data according to the customized datasets shared. For people outside snowflake, 
+you need to create a reader account with access to only read the data.
+
+Below are the objects that can be shared:
+Tables
+External tables
+Secure views
+Secure materialized views
+Secure UDFs
+
+There are two types of users:
+1. Data provider: The provider creates a share of a database in their account and grants access to specific objects in the database.
+The provider can also share data from multiple databases, as long as these databases belong to the same account.
+2. Data consumer: On the consumer side, a read-only database is created from the share. 
+Access to this database is configurable using the same, standard role-based access control that Snowflake provides for all objects in the system.
