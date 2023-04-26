@@ -58,5 +58,8 @@ It has responsibilities such as :
 3. Data Encryption
 4. Archival of Data
 
-8.
-
+8.Which Snowflake edition should you use if you want to enable time travel for up to 90 days :
+The Standard edition supports the time travel period of up to 1 day. 
+For time travel of more than 1 day for the permanent table, 
+we need to get a Snowflake edition higher than standard. 
+All snowflake editions support only one day of time travel by default.
