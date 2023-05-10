@@ -1,0 +1,154 @@
+1.Object  in schema
+
+Stream object is created on top of permanent ,transient  or temporary tables or external table .
+
+
+Create or replace stream my_stream
+On table customer 
+
+
+All dml operations on the customer table  is tracked.
+Like insert, update ,delete, truncate
+
+3 columns added 
+
+1.metadata$action
+2.Metadata$isupdate
+3.Metadadat$rowid
+
+
+Different types of streams
+
+1.Append_only=true 
+2.Insert_only == true   this is only for external table
+
+
+Can we create multiple streams on source table
+
+ N number of streams can be created 
+
+
+Can stream can be cloned?
+
+Yes
+
+What is offset?
+
+
+
+Update ?
+2 records will be stored in the stream  ie delete the old record and insert the new record with update
+
+Delete -
+Only 1
+
+Insert - 
+Only 1
+
+
+Same way for creating stream in Transient table 
+Temporary table and permanent table
+
+Data retention in source table doesn’t to impact any streamm
+Every stream has 14 days default
+
+
+
+Check consuming stream  …….?
+
+External table 
+
+Only insert mode
+
+
+
+
+
+
+
+Examples
+
+
+
+
+
+
+
+Use database study
+create or replace table customer
+(
+id number,
+first_name varchar,
+last_name varchar,
+date_of_birth date,
+active_flag boolean,
+city varchar 
+);
+
+insert into customer values
+(1,'Joan','Luk','3/15/2003',TRUE,'New York'),
+(2,'Pat','jon','4/29/2003',FALSE,'Los Angeles'),
+(3,'Ryan','Shiju','3/28/2011',FALSE,'Virginia'),
+(4,'Abram','Shiju','8/01/2017',FALSE,'Virginia'),
+(5,'Sim','Rose','8/25/2008',TRUE,'Chicago'),
+(6,'Lila','Vis','9/19/1997',TRUE,'Miami'),
+(7,'Charlie','cook','3/19/2003',FALSE,'philadelpia'),
+(8,'Davis','Boon','5/29/2003',FALSE,'Mexico'),
+(9,'Param','Shiv','3/29/2007',FALSE,'India'),
+(2,'krish','Shiv','2/23/2002',FALSE,'India')
+
+select * from customer
+
+create or replace stream customer_stream on table customer;
+select * from customer_stream
+
+
+insert into customer values
+(15,'Sita','Ram','3/15/1983',TRUE,'India'),
+(16,'Ram','Sita','4/29/1965',FALSE,'India');
+
+
+select * from customer_stream
+
+select * from customer
+
+
+delete from customer where id =2;
+
+select * from customer_stream order by id;
+
+
+update customer set city='Pakisthan' where  id =1;
+update customer set active_flag='True' where id =4;
+
+
+Show streams
+--stale -- 14 days 
+--type delta
+--stale_after
+
+
+desc stream customer_stream
+alter stream customer_stream set comment = "my stream on customer table cdc 14 days";
+
+select get_ddl('stream' ,'customer_stream')
+
+alter stream customer_stream unset comment
+
+##drop stream 
+
+
+
+#create another stream 
+
+create or replace stream customer_append on table  customer
+append_only =true
+
+select * from customer_append order by id;
+select * from customer_stream order by id;
+
+
+
+
+
+
