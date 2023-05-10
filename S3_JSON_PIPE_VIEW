@@ -1,0 +1,124 @@
+#read json from s3
+#create file format
+#create stage and load to the s3 file to snowflake stage
+#create pipe using copy
+#create view and read the loaded snowflake table
+
+
+#create warehouse and database
+
+use role sysadmin;
+
+create warehouse if not exists COMPUTE_JSON
+warehouse_size = xsmall
+warehouse_type = standard
+;
+
+CREATE DATABASE STUDYSNOW COMMENT = 'The Lab Database' DATA_RETENTION_TIME_IN_DAYS = 1;
+
+
+
+-- create a json file format
+create or replace file format my_json_ff
+    type = 'JSON'
+    compression = 'AUTO'
+    comment = 'Ch-10 JSON file format with default values';
+
+
+-- lets describe it
+desc file format my_json_ff;
+
+#drop stage my_json_stage
+-- creating a stage location + attach file format
+create or replace stage my_json_stage
+  url = 's3://jsonstreamingsnowpipe/'
+  file_format = my_json_ff;
+
+--lets describe it.
+desc stage my_json_stage;
+
+-- lets list the stage location
+
+ls @my_json_stage
+-- create a tweet tables
+create or replace table tweet_json_tbl (
+ src variant,
+ file_name string,
+ stg_creation_timestamp timestamp,
+ sf_scan_timestamp timestamp
+);
+
+
+
+
+-- lets run a copy command
+copy into tweet_json_tbl from 
+(
+    select *,
+    metadata$filename as file_name,
+    METADATA$FILE_LAST_MODIFIED stg_creation_timestamp,
+    METADATA$START_SCAN_TIME sf_scan_timestamp
+    from @my_json_stage
+);
+
+-- creating my pipe
+create or replace pipe tweet_pipe 
+    as 
+copy into tweet_json_tbl from (
+    select *,
+    metadata$filename as file_name,
+    METADATA$FILE_LAST_MODIFIED stg_creation_timestamp,
+    METADATA$START_SCAN_TIME sf_scan_timestamp
+    from @my_json_stage
+);
+
+
+create or replace view tweet_view 
+(file_name,stg_creation_timestamp,user_name,screen_name,followers_count,friends_count,location, about_me,tweet_txt,hashtag,created_at)
+as 
+select
+    file_name,
+    stg_creation_timestamp,
+    src:user.name::string,
+    src:user.screen_name::string as screen_name,
+    src:user.followers_count::int as followers_count,
+    src:user.friends_count::int as friends_count,
+    src:user.location::string as location,
+    src:user.description::string as about_me,
+    src:text::string as tweet_txt,
+    src:entities.hashtags[0].text::string as hashtag,
+    src:created_at::timestamp as created_at
+from tweet_json_tbl;
+
+
+select * from tweet_view
+
+What all the metadatainformation available when a file is loaded?
+
+-- query the location
+select *,
+    metadata$filename as file_name,
+    METADATA$FILE_LAST_MODIFIED stg_creation_timestamp,
+    METADATA$START_SCAN_TIME insert_timestamp
+from @my_json_stage;
+
+
+
+Aws policy
+
+{
+    "Version": "2012-10-17",
+    "Id": "Policy1683710727415",
+    "Statement": [
+        {
+            "Sid": "Stmt1683710725249",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:*",
+            "Resource": [
+                "arn:aws:s3:::jsonstreamingsnowpipe",
+                "arn:aws:s3:::jsonstreamingsnowpipe/*"
+            ]
+        }
+    ]
+}
