@@ -2,3 +2,13 @@
 Only account admin
 
 Too see - Compute section
+
+
+
+Resource monitors are standloane objects in snowflake – allow you to set Credit consumption limt onuser manage vw – at account level 
+
+Limits can set daily /weekly/mnthly – when these limits reached- resource monitor can trigeer various actions – sendinga lert or susopend
+Resource montoer – only by account admins – how eevrr – account admin can choose allow other roles to view or modify resource monitros
+
+
+Once resource moniote is created , it can apply to a single virtual warehouse  or like at account level
