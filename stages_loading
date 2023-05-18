@@ -1,0 +1,191 @@
+
+
+
+User stage
+--Created for all users automatically and no storgea limit
+--Nobody else can access this stage location
+--Even accoutadmin or security admin acn not access user stage 
+--all your worksheet are stored there including the worksheet metadata
+--this stage cannot be assocaited with any file like csv or paquet
+--admin an only see the stage size ,but cant see the locations
+--even with snowflake account tables like STAGES,STAGE_USAGE_HISTORY,STORAGE_USAGE do not give any hint
+--load data using put @~ comand
+--snowflake uses cloud object storage to store all data and files
+
+ls @~
+
+TABLE STAGE
+--created for all table automatically and no storage limit
+--only owner of the table can access this stage
+--if you create a table , you can load any amount of data to ths table stage
+--to execute a query on this stage,you can associate format with the table 
+--admin an only see the stage size ,but cant see the locations
+--even with snowflake account tables like STAGES,STAGE_USAGE_HISTORY,STORAGE_USAGE do not give any hint
+--load data using put @%tablename comand
+--no need of any special permission as this stage is crated for individual users
+
+
+
+
+msg string);
+
+NAMED STAGE
+
+show stages
+list @stg01;
+
+CREATE STAGE my_db_objects.my_schema_objects.STGINTERNAL COMMENT ='THIS IS MY DEMO'
+
+SHOW STAGES LIKE 'STG%'
+
+REMOVE @~STAGENAME
+LIST @~
+
+list @~ pattern='.*emp.*';
+list @~ pattern='.*.gz';
+
+--put command
+put file:///Users/ajshiju/Desktop/de/employee.json  @~/my_schema_objects/
+
+
+--Table Stage
+
+create stage my_db_objects.my_schema_objects.tablestagenew
+
+
+select * from my_db_objects.my_schema_objects.tablestage
+
+put command doesnt not use virtual warehouse :
+
+put file:///Users/ajshiju/Desktop/de/employee.json  @%tablestagenew/my_schema_objects
+use database my_db_objects
+use schema my_schema_objects;
+ls @%tablestage
+
+--Named Internal stage
+@Stage_name
+
+--Named External Stage 
+@Stage_name
+
+show stages
+
+ALTER VI
+
+Create table parquet_ff(
+my_data variant
+)STAGE_FILE_FORMAT=(TYPE =PARQUET);
+
+put file:///Users/ajshiju/Desktop/de/5000_predictions.parquet  @%parquet_ff;
+ls @%parquet_ff
+
+select 
+metadata$filename,
+metadata$file_row_number,
+$1
+from 
+@%parquet_ff limit 5;
+
+
+copy into parquet_ff from @%parquet_ff/5000_predictions.parquet 
+
+Alter warehouse compute_wh
+Set warehouse compute_wh=‘large'
+
+select * from parquet_ff limit 5;
+
+
+How to load the same file again ?
+
+it will not load for 64 days
+
+but we can force load it 
+using 
+
+copy into parquet_ff from @%parquet_ff/5000_predictions.parquet 
+force=true : load duplicatesl
+
+
+
+select * from "SNOWFLAKE"."ACCOUNT_USAGE"."COPY_HISTORY" ;
+select * from "SNOWFLAKE"."ACCOUNT_USAGE"."LOAD_HISTORY" ;
+select * from "SNOWFLAKE"."ACCOUNT_USAGE"."STAGES" ;
+
+
+FILEFORMAT 
+
+
+CREATE OR REPLACE FILE FORMAT MY_PARQUET_FF TYPE='parquet';
+CREATE OR REPLACE FILE FORMAT MY_JSON_FF TYPE='json';
+CREATE OR REPLACE FILE FORMAT MY_CSV_FF TYPE='csv';
+
+show file formats;
+
+create or replace stage stg_csv
+file_format='MY_CSV_FF'
+comment='csv';
+example:
+copy into customer_csv_ff from @stg_csv
+
+create stage stg_none
+comment='no file format'
+But we can still attache the file format while copying the data ,
+example:
+
+copy into customer_csv from @stg_none
+file_format =(format_name=my_csv_ff);
+we can also overwrite the fileformt even if it is alreday defined.
+
+
+
+
+
+
+Pattern Loading :
+copy into table from @%t1/region/state/city/2
+files=('my_data1.csv','mydata2.csv');
+
+copy into t1 from @%t1/state/cirty
+pattern='.*mydata
+
+
+access the files via $notataion
+
+select $1,$2,$3 from @mystag/csv.
+
+
+quering external stage need vritrual wareshouse
+
+
+
+--check the error file without loaidng the file
+copy into my_custoime_csv from
+@my_stg/my_data/
+files=('cus_41_error.csv')
+validation_mode='RETRUN_ERRORS';
+
+
+copy into my_custoime_csv from
+@my_stg/my_data/
+files=('cust_10_rows.csv')
+validation_mode='RETRUN_10_rows;
+
+
+
+Put does not use any named compute
+but copy use named compute
+
+
+Load_perfomance
+
+:
+
+
+
+
+
+
+
+
+
+
