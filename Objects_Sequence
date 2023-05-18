@@ -1,0 +1,64 @@
+Sequence
+
+
+use role sysadmin;
+
+Create or replace database my_db_objects comment ="database creation"
+create Schema my_schema_objects comment ='schema';
+
+use database my_db_objects;
+use schema my_schema_objects;
+
+create or replace sequence seq1
+start = 1
+increment=5
+comment='my seq' ;
+
+create or replace sequence seq2
+start = 1
+increment=2
+comment='my seq2'
+
+create or replace sequence seq3
+start = 0
+increment=-2
+comment='my seq3'
+
+select seq1.nextval,seq2.nextval,seq3.nextval
+
+create table mytable
+(pk int autoincrement ,
+seq1 int default seq1.nextval,
+seq2 int default seq2.nextval,
+seq3 int default seq3.nextval,
+msg string);
+
+desc table mytable
+
+select get_ddl('table', 'mytable')
+insert into mytable (msg) values('msg1');
+
+select * from mytable
+
+show sequences ;
+show sequences like 'seq%'
+select get_ddl('sequence', 'seq1')
+
+
+
+File format
+
+CSV,ORC,parquet,xml,json
+
+show File formats;
+show File formats like 'seq%'
+select get_ddl('File format', 'seq1')
+
+Stage
+
+Snowflake  can'tload data directly with out stages
+Stages are not table , its like a dir level 
+
+
+
+
