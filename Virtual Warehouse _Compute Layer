@@ -1,0 +1,225 @@
+
+
+
+
+Scale up and down : Spin up and shut down unlimited number of warehouse without resource contention
+it uses :
+DML
+DQL
+COPY INTO- data loading
+
+User only interact with named warehouse – not compute resources
+VW configurations changes on fly
+VW contain local SS storage used to store raw data
+VW created via snowflake UI or SQL commands
+
+
+VW can be created or destroyed instantly
+
+DROP WAREHOUSE MY_WAREHOUSE
+
+Create warehouse MY_MED_WH
+  Warehouse_size=‘MEDIUM’;
+
+ALTER WAREHOUSE My_WH SUSPEND :
+
+When it suspend it does not cost anything .
+
+Resize : Alter warehouse my_wh_2 set warehouse_size=Medium ;
+
+Dynamically Scale
+
+Create warehouse my_wh_3
+Min_cluster_count=1
+Max_cluster_count=3
+Scaling_policy=Standard;
+
+
+3 states
+Started- active and ready to process queries  –consume  credits
+Suspend-shutdown – no credits
+Reszie- up or down – process in progress
+
+By default when its created its in started state.
+Suspending a VW – removes all computes nodes from warehouse
+
+ALTER WAREHOUSE MY_WH SUSPEND
+
+ALTER WAREHOUSE MY_WH RESUME – putting back into started and can execute queries
+
+
+Pros – avoid painfull compute rsources
+
+Example : if you know work only 9-5 hours – users could suspend and avoid being billed overnight
+
+3 parameters  that controls the suspend and resume behaviour in an automated way
+
+AUTO SUSPEND
+
+Create warehouse my_wh 
+Auto_suspend=300;
+
+
+
+
+You are not guarnetedd a shutdown in less than 60 sec.
+
+Setting zero or null means – vw will never suspend
+
+by default set t 600 sec whne creating ie 10 min
+
+Caveats(limitation)
+VW cache is cleard when an instance is stopped
+So queries could take longer when resumed.
+
+
+
+
+Auto resume
+Create waehosue my_wh
+Auto_resume=true;  - default is on – control manually if required.
+
+
+INTIALLY SUSPEND
+Create warehouse my_wh
+Intially_suspend=true;
+Warehouser crtate intailly in susped mode – default is starerd state
+This help you not to immiedylay start billing – when you want to create some tables – which doesn not require virtual warehouse
+
+Size – extra small to 6 times extra large
+
+Five x and six x – only available in snowflake aws – it will take longer time to provisions
+
+Auto suspend – no if inacativiyty before warehoure suspends 
+
+Pros and cons – if we autosuspend-  it wil take more credit
+If not cash will clear – and qureiy will take more time – which results in more credits
+
+
+
+How to decide the size of warehouse?
+
+IF ITS SMALL QUIRES USE – SMALL SAIZE
+IIF COMPLEX AND CONATIONS MORE PREDICATES ,MORE PROJESCTINNBS – USE LARGE
+
+SNOWFLAKE RECOMMEDS RUN SOME  TYPLICAL QURIES– TEST
+FOR DATA LAODING – SMALL IS SUFFEICNT
+SNOWFLAKE RECOMMEDNS SMALL  
+
+AS THE COMPUTE POWERS DOUBESLW  WITH ACH SHORT SIZE IT DOWUBES THE COST
+
+
+VIRTAUAL WARE HOSUES ARE BILLED WHNE THERY AE STARTED STATED – NOT BASED ON HOW MANY QUIRES BEINGE XECUTES ON THEM.
+
+THE FIRST 60 SECINDS ARE ALWSYS CHARGD FIRST THEN PER SECOND BASINS
+
+
+
+Scaling Up
+
+2 ways
+For query perfoamne
+
+Alter warehouse my_wh
+Set warehoisue size=‘laergr
+
+Scaling up  is not an automated process. - need user inreactoins
+Scaling  up also performs using UI
+
+Reszing Vw doest need query to stop running
+
+Extras comute resource fron large Vw ar only used for qued and new quries
+
+Opposite – decres size of our running warehosur rmves computer resource from  warehisue – when resource are removwe – cahse  will be dropped and incarese perfomeance of the query
+
+Scaling OUT
+
+Named poold of vw that are automaicatlyt add or rewmove indivaidaul warehisure dyanamcially in response to the nuber of concurrent users or quires
+
+
+
+Auto resume
+intail suspsend 
+
+
+Blue - running and no issues
+Yellow- queue 
+
+
+
+Only Pay when the clustering is running : 
+Charge every 60 seconds
+
+
+
+Multi Cluster 
+
+MIN_CLUSTER_COUNT
+MAX)CLUSTER_COUNT
+Setting thses values same will put the multi cluster warehisue in Maximized mode
+
+
+All vw in entrepresi editions are configures as multi cluster
+When setting two parmatesr diffenertlty – you put multi cluster called auto scale mode
+
+
+When in auto scale mode – the user can set a property called sacalling policy when creating multi cluster wartehisue
+Aim is to minismise queing by more aggresvy scaling out vwq
+
+CRETE WAREHOSUE MY
+Min_clsuet_count=1
+Ma_clsur=4
+Scaling_polyc=satandar
+
+
+Cluster start with minimum – ahen a query is qued additiobnal clusrer will be added.,
+
+Sclinag down –check will be oerfomed every 1 minut to  determine if the load on the leased busy vw could be redisturbed to other vw with suffcubent spare capacity
+
+
+ALTER WAREHOUSE mywh SET SCALING_POLICY = 'ECONOMY';
+ALTER WAREHOUSE mywh SET SCALING_POLICY = 'Standard';
+
+
+Standard (default)
+
+Prevents/minimizes queuing by favoring starting additional clusters over conserving credits.
+
+The first cluster starts immediately when either a query is queued or the system detects that there’s 
+one more query than the currently-running clusters can execute.
+
+Warehouse Starts… :Each successive cluster waits to start 20 seconds after the prior one has started.
+For example, if your warehouse is configured with 10 max clusters, it can take a full 200+ seconds to start all 10 clusters.
+
+Warehouse Shutdown: :After 2 to 3 consecutive successful checks (performed at 1 minute intervals), 
+which determine whether the load on the least-loaded cluster could be redistributed to the other clusters without spinning up the cluster again.
+
+Economy
+
+Conserves credits by favoring keeping running clusters fully-loaded rather than starting additional clusters,
+which may result in queries being queued and taking longer to complete.
+
+Warehouse Starts… :Only if the system estimates there’s enough query load to keep the cluster busy for at least 6 minutes.
+
+Warehouse Shutdown:… After 5 to 6 consecutive successful checks (performed at 1 minute intervals), which determine whether
+the load on the least-loaded cluster could be redistributed 
+to the other clusters without spinning up the cluster again.
+
+
+Virtual Warehouse workload
+
+4 states
+1.running
+2.Queue
+3.Queue(provision)
+4.Queue(reparing)
+
+query execution time = total workload/interval
+
+
+Compute :-
+Query history  :- query id ,
+   query profiling :--
+Resource monitor
+Workload
+
