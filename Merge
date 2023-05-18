@@ -1,0 +1,77 @@
+The Need for Snowflake Merge
+Snowflake Merge command is required when you want to perform some alterations
+on the table to update the existing records, 
+deleting the old/inactive records, or adding new rows from another table.
+
+Merge is usually helpful when you want to perform Change Data Capture with Slow changing dimensions.
+
+Snowflake offers two clauses to perform Merge:
+
+Matched Clause – Matched Clause performs Update and Delete operation on the target table when the rows satisfy the condition. 
+Not Matched Clause – Not Matched Clause performs the Insert operation when the row 
+satisfying conditions are not matched. The rows from the source table that are not matched with the target table will be inserted
+
+Note : if duplicates records exist in source for the matching cloumn, it will fail 
+
+create table target_table (id integer, adrress varchar ,description varchar);
+create table source_table (id integer,adrress varchar, description varchar);
+
+insert into target_table (id, adrress,description) values
+    (10,'henrico' ,'this is the old value')
+    ;
+
+select * from target_table
+
+    insert into source_table (id,adrress, description) values
+    (10, 'glen allen' ,'this is the new value')
+    ;
+
+--Update 
+    merge into target_table using source_table 
+    on target_table.id = source_table.id
+    when matched then 
+        update set target_table.description = source_table.description,
+        target_table.adrress=source_table.adrress
+        ;
+select * from source_table
+
+        insert into source_table (id,adrress, description) values
+(11,'ashland' , 'Value1 from source'),
+(12, 'midliotion' ,'Value2 from source'),
+(13, 'mechnvilla' , 'Value3 from source)');
+
+       -- Perform Merge (Insert + Update).
+
+merge into target_table using source_table 
+    on target_table.id = source_table.id
+    when matched then 
+        update set target_table.description = source_table.description,
+        target_table.adrress=source_table.adrress
+        
+    when not matched then 
+        insert (id,adrress, description) values (source_table.id, source_table.adrress,source_table.description);
+
+        select * from target_table
+
+
+
+
+truncate table source_table;
+
+insert into source_table (id, adrress,description) values
+(10, 'chester','Value1 to Insert'),
+(14, 'chester','Value1 to Insert'),
+(15, 'goochland','Value2 to Insert');
+
+
+    merge into target_table using source_table 
+    on target_table.id = source_table.id
+    when matched and source_table.id = 10 then delete
+    when matched and source_table.id >10 then 
+    update set target_table.description = source_table.description
+    when not matched then 
+    insert (id, description) values (source_table.id, source_table.description);
+
+
+    select * from target_table
+
