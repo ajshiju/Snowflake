@@ -1,0 +1,93 @@
+
+COPY INTO LOCATION / @stage
+ Internal stage ,external stage or any external location.
+ 
+ COPY INTO @MY_STAGE FROM TABLE;
+ 
+ Also copy o/p of the query.
+ 
+ 
+ The file format you can copy into a stage are a bit more limited than those supported 
+ by the copy into table command.
+ 
+Copying to location supports the limited files, so file formats 
+like CSV and TSV, as well as the semi-structured
+file formats, JSON and parquet
+
+If you've copied a file to an internal stage, we can use the get command to retrieve it.
+This specifies a source stage and a target directory on a local file system.
+
+
+GET @my_stage  file://folder/files/;
+
+
+
+By default, results are loaded to a stage.Using the copying to location command are split into multiple files.
+The exact number of files generated is impacted by the size of the virtual warehouse executing the copy
+into command.
+
+
+By default,the generated files are in CSV file format compressed using GZIP and are always encoded using UTF eight.
+
+All data files unloaded to a snowflake internal location are automatically encrypted using 128 bit keys.
+
+
+exmaple 1
+use of a select query to copy data into a named stage.
+
+The files generated from executing this command can be prefixed with a string by including at the end
+
+copy into @my_stage/result/data_
+from (select & from t1)
+file_format=my_csv_file_format;
+
+
+exmaple 2:
+
+copy into @%t1
+from partition by ('date='||to_varchar(dt))
+file_format=my_csv_file_format
+
+
+exampel 3:
+
+The copy into location.
+
+Command can also copy table contents directly to an external cloud providers blob storage such as an
+
+S3 bucket without the use of a stage object.
+
+
+copy inton 's3://mybucket/unlaod/'
+from
+storgae_integration=my_int
+file_format=my_csv_file_format;
+
+
+Copying to location includes a copy option called partition by this partitions unloaded data into a
+
+OVERTWRITE =ABORT_STATEMNET
+SINGLE =FALSE
+MULTI_FILE_SIZE  -DEFUALY SIZE 60 MB COMPRERSSED.
+INCLUDE_QUERY_ID =FLASE
+
+
+
+GET COMMAND - REVERSE OF PUT
+
+GET @MY_SATGE  FILE:////IMP/DATA
+IT CANNOT BE USED FOR EXTERANL STAGES
+
+
+GET @MY_SATGE  FILE:////IMP/DATA
+PARALLEL=99;  #NO OF Threasd to use for downlaoding
+default is 10 threrads
+
+Increasing the number of threads can improve performance when downloading large files.
+
+
+GET @MY_SATGE  FILE:////IMP/DATA
+PATTERN='\\.(csv)';
+
+
+
