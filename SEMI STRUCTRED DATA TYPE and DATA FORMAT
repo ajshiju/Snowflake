@@ -1,0 +1,75 @@
+SEMI STRUCTRED DATA TYPE:
+
+1.ARRAY
+Contain 0 or more elements of data.Each element can be diff data type and  
+is accessed by its position in the array.
+
+Create table my_array_table(
+name varchar ,
+	hobbies array
+);
+
+Insert into my_array_table
+select 'Alina nowak', ARRAY_CONSTRUCT('WRITINH,'STAMPCOLLLECTIO');
+									  
+									  
+2. OBJECT - COLLECTION OF KEY_VALUE PAIRS.
+									  
+									  
+Create table my_objet_table(
+name varchar ,
+	Address object
+);
+ Insert into my_objet_table
+select 'Alina nowak', OBJECT_CONSTRUCT('10708 SQUAW VALLEY ,'23060');
+				
+				
+				
+3.VARIANT
+Universal semi-structred data type  used to  represnt arbitray data structure
+
+
+This is why you might see it referred to as a universal semi-structured data type in the documentation.
+
+That is primarily used for storing whole semi-structured data files.
+you could load an entire JSON or POC document into a variant column or split its elements
+
+up into separate rows during loading.									  
+					
+					
+Create table my_varr_table(
+name varraint ,
+	address varraint,
+	hobbies variant)
+);
+		
+		
+		insert into my_varr_table
+		select 'alina' :: Varinat 
+		obejst_construct('pstcode','23060','firstlinbe'),
+		Arreay_consturc('writing','painting','baking');
+		
+		
+		One important bit of information to know is that a variant data type can hold up to 60 megabytes of
+
+compressed data per row.
+
+So if you're loading a large file into a variant column that exceeds that threshold, an error will
+
+be thrown.
+
+You will either have to split that JSON file prior to loading it or use a file format option to separate
+
+the JSON objects in a file so they're loaded as separate rows.
+
+
+Semi structred data formats
+
+1.JSON
+2.xml
+3.orc
+4.parquet
+5.avro
+
+									  
+
