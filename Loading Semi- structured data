@@ -1,0 +1,86 @@
+Loading Semi- structured data
+
+
+Data files are uploaded to a stage and then a copy into command is executed either by the user or via
+a snow pipe to move those stage files into table storage.
+
+
+Json format options
+
+compression :-The compression property is used when loading data.
+Strip-outer-array
+
+
+There are three main approaches to loading semi-structured data files.
+
+The first is an EOT style approach, which stands for Extract, Load, Transform.
+
+Create table my_table(
+V Variant );
+
+Copy into  my_table from @my_stage/file1.json
+file_format=ff_json;
+
+
+
+The next option is to pick up column values directly from the semi-structured data files.
+
+Up front.
+
+create table my_table(
+name string,
+age number,
+dob date);
+
+
+copy into my_table
+from (select v:name,v:agr,v:dob  from @my_stage/file1.json)
+file_format=ff_json;
+
+
+By following the ETL approach and separating them into columns, you can store these values as their
+native data types.This can improve pruning and decreased storage consumption.
+
+
+
+
+Automataic Schema detection
+
+INFER_SCHEMA
+
+creta table my_table
+USING TEMPLATE (
+SELECT ARRAY_AGG (OBJECT_CONSTRUCT(*) )  
+from table (
+INFER SCHEMA (
+LOCATION=> ''@MY_STAGE',  FILE_FORMAT=> 'FF_PARQUET')));
+	
+	
+	
+	MATCH_BY_COLUMN_NAME
+	
+	
+	COPY INTO MY_TABLE
+	FROM @MY_STAGE/FILE1.JSON
+	FILE_FORMAT =(TYPE='JSON')
+MATCH_BY_COLUMN_NAME=CASE_SENSITIVE;
+	
+	
+	
+	
+	UNLOADING 
+	
+	1.TABLE -> COPY INTO -  STAGE  - >
+	2. STAGE -> GET COMMAND.- FILES
+	
+Unloading your data works much in the same way for semi-structured data as it does for structured.
+You first execute a copy into location command to copy data from a table or a query into a stage as
+a file.This is followed by the get command to effectively download that data to your local machine.
+)
+
+You can apply a file format to either the copy to statement, the stage or the definition of the table.
+However, as previously mentioned, only two semi-structured file formats are able to be unloaded to
+a stage JSON and PARQUE.
+	
+	CREATE FILE_FOMRMAT <NAME>
+	TYPE={JSON|AVRP|ORC|PARQUET|XML}
